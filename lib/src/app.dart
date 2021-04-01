@@ -17,6 +17,7 @@ class HoroscopeApp extends MaterialApp {
             ),
             accentColor: Colors.white,
             primaryColor: kPrimaryColor,
+            fontFamily: 'della',
           ),
           routes: AppNavigation.routes,
           // home: HomePage(),
