@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.airsoft.horoscope_app">
-   <application
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
         android:label="astrom - Daily Horoscopes"
         android:icon="@mipmap/ic_launcher">
         <activity
