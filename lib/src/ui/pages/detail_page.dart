@@ -8,6 +8,29 @@ import 'package:horoscope_app/src/ui/widgets/no-data_widget.dart';
 import 'package:horoscope_app/src/utility/constants.dart';
 import 'package:horoscope_app/src/utility/nav.dart';
 
+class _SliverLogoPersistentHeader extends SliverPersistentHeaderDelegate {
+  final SizedBox container;
+
+  _SliverLogoPersistentHeader(this.container);
+
+  @override
+  Widget build(
+          BuildContext context, double shrinkOffset, bool overlapsContent) =>
+      Container(
+        color: Colors.white,
+      );
+
+  @override
+  double get maxExtent => container.height;
+
+  @override
+  double get minExtent => container.height;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      false;
+}
+
 class DetailPage extends StatefulWidget {
   final Zodiac zodiac;
 
@@ -38,6 +61,42 @@ class _DetailPageState extends State<DetailPage>
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      endDrawer: Drawer(
+        elevation: 1.0,
+        child: ListView(
+          children: [
+            SizedBox(height: 10),
+            ListTile(
+              title: Text('Change Horoscope'),
+              leading: Icon(Icons.track_changes),
+              onTap: () async {
+                Navigator.of(context).pop();
+                final _result = await AppNavigation.toPage(
+                  context,
+                  AppPage.menuPage,
+                );
+                if (_result != null) {
+                  _zodiac = _result;
+                  setState(() {});
+                }
+              },
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              child: Center(
+                child: Text('Ad will go here'),
+              ),
+              height: 100,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: kPrimaryColor,
+                  width: 1,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       drawer: Drawer(
         elevation: 1.0,
         child: ListView(
@@ -88,7 +147,6 @@ class _DetailPageState extends State<DetailPage>
           headerSliverBuilder: (ctx, b) {
             return [
               SliverAppBar(
-                title: Text(''),
                 backgroundColor: Colors.white,
                 leading: TextButton(
                   onPressed: () => _scaffoldKey.currentState.openDrawer(),
@@ -99,16 +157,7 @@ class _DetailPageState extends State<DetailPage>
                 ),
                 actions: [
                   TextButton(
-                    onPressed: () async {
-                      final _result = await AppNavigation.toPage(
-                        context,
-                        AppPage.menuPage,
-                      );
-                      if (_result != null) {
-                        _zodiac = _result;
-                        setState(() {});
-                      }
-                    },
+                    onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
                     child: Icon(
                       CupertinoIcons.star,
                       color: kPrimaryColor,
@@ -116,33 +165,74 @@ class _DetailPageState extends State<DetailPage>
                   ),
                 ],
               ),
+              SliverPersistentHeader(
+                delegate: _SliverLogoPersistentHeader(
+                  SizedBox(
+                    height: 300,
+                    width: double.infinity,
+                    child: Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            _zodiac.imageName,
+                            color: kPrimaryColor,
+                          ),
+                          Text(
+                            _zodiac.name,
+                            style: TextStyle(
+                              color: kPrimaryColor,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                pinned: true,
+              ),
               SliverToBoxAdapter(
                 child: Container(
                   color: Colors.white,
-                  height: 220,
+                  height: 120,
+                  padding: EdgeInsets.only(left: 10),
                   child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset(_zodiac.imageName),
-                      Text(
-                        _zodiac.name,
-                        style: TextStyle(
-                          color: kPrimaryColor,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Sign: ${_zodiac.sign}',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Text(
-                        'Sign: ${_zodiac.sign}',
-                        style: TextStyle(fontSize: 16),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Planet: ${_zodiac.planet}',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
                       ),
-                      Text(
-                        'Planet: ${_zodiac.planet}',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      Text(
-                        'Element: ${_zodiac.element}',
-                        style: TextStyle(fontSize: 16),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Element: ${_zodiac.element}',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -162,10 +252,22 @@ class _DetailPageState extends State<DetailPage>
                     labelColor: kPrimaryColor,
                     unselectedLabelColor: Colors.grey.shade500,
                     tabs: [
-                      Tab(text: 'Daily'),
-                      Tab(text: 'Weekly'),
-                      Tab(text: 'Monthly'),
-                      Tab(text: 'Yearly'),
+                      SizedBox(
+                        width: 100,
+                        child: Tab(text: 'Daily'),
+                      ),
+                      SizedBox(
+                        width: 100,
+                        child: Tab(text: 'Weekly'),
+                      ),
+                      SizedBox(
+                        width: 100,
+                        child: Tab(text: 'Monthly'),
+                      ),
+                      SizedBox(
+                        width: 100,
+                        child: Tab(text: 'Yearly'),
+                      ),
                     ],
                   ),
                 ),
@@ -227,15 +329,16 @@ class __DailyDetailState extends State<_DailyDetail> {
               return SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                  // padding:
+                  padding: const EdgeInsets.all(15.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         _dailyHoroscope.detail,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
+                          letterSpacing: 1,
                         ),
                         softWrap: true,
                       ),
@@ -292,10 +395,17 @@ class __WeeklyDetailState extends State<_WeeklyDetail> {
               return SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(15.0),
                   child: Column(
                     children: [
-                      Text(_weeklyHoroscope.detail),
+                      Text(
+                        _weeklyHoroscope.detail,
+                        style: TextStyle(
+                          fontSize: 16,
+                          letterSpacing: 1,
+                        ),
+                        softWrap: true,
+                      ),
                       LikeDislikeWidget(),
                     ],
                   ),
@@ -349,11 +459,18 @@ class __MonthlyDetailState extends State<_MonthlyDetail> {
               return SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(15.0),
                   child: Column(
                     children: [
                       SizedBox(height: 5),
-                      Text(_monthlyHoroscope.detail),
+                      Text(
+                        _monthlyHoroscope.detail,
+                        style: TextStyle(
+                          fontSize: 16,
+                          letterSpacing: 1,
+                        ),
+                        softWrap: true,
+                      ),
                       LikeDislikeWidget(),
                     ],
                   ),
@@ -407,10 +524,17 @@ class __YearlyDetailState extends State<_YearlyDetail> {
               return SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(15.0),
                   child: Column(
                     children: [
-                      Text(_yearlyHoroscope.detail),
+                      Text(
+                        _yearlyHoroscope.detail,
+                        style: TextStyle(
+                          fontSize: 16,
+                          letterSpacing: 1,
+                        ),
+                        softWrap: true,
+                      ),
                       LikeDislikeWidget(),
                     ],
                   ),
@@ -438,17 +562,14 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new Container(
-      color: Colors.white,
-      child: _tabBar,
-    );
-  }
+          BuildContext context, double shrinkOffset, bool overlapsContent) =>
+      Container(
+        color: Colors.white,
+        child: _tabBar,
+      );
 
   @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
-  }
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) => false;
 }
 
 class LikeDislikeWidget extends StatefulWidget {

@@ -66,7 +66,11 @@ class _WelcomePageState extends State<WelcomePage> {
                 child: DatePickerWidget(
                   onChange: (selectedDate, _) => _selectNewZodiac(selectedDate),
                   pickerTheme: DateTimePickerTheme(
-                    itemTextStyle: TextStyle(color: Colors.white, fontSize: 19),
+                    itemTextStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 19,
+                      fontFamily: 'della',
+                    ),
                     dividerColor: kPrimaryColor,
                     backgroundColor: kPrimaryColor,
                   ),
@@ -83,7 +87,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     AppNavigation.toPage(context, AppPage.detailPage);
                   },
                   child: Text(
-                    'Continue'.toUpperCase(),
+                    'Synchronized'.toUpperCase(),
                   ),
                   style: ElevatedButton.styleFrom(
                     primary: kPrimaryColor,
