@@ -2,29 +2,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:horoscope_app/src/data/data.dart';
 import 'package:horoscope_app/src/data/models/horoscope-detail_model.dart';
-import 'package:horoscope_app/src/services/horoscope_service.dart';
-import 'package:horoscope_app/src/ui/widgets/loading_widget.dart';
-import 'package:horoscope_app/src/ui/widgets/no-data_widget.dart';
+import 'package:horoscope_app/src/ui/views/daily_view.dart';
+import 'package:horoscope_app/src/ui/views/monthly_view.dart';
+import 'package:horoscope_app/src/ui/views/weekly_view.dart';
+import 'package:horoscope_app/src/ui/views/yearly_view.dart';
+import 'package:horoscope_app/src/ui/widgets/like-dislike_widget.dart';
+import 'package:horoscope_app/src/utility/assets.dart';
 import 'package:horoscope_app/src/utility/constants.dart';
 import 'package:horoscope_app/src/utility/nav.dart';
 
 class _SliverLogoPersistentHeader extends SliverPersistentHeaderDelegate {
-  final SizedBox container;
+  final Container container;
+  final double height;
 
-  _SliverLogoPersistentHeader(this.container);
+  _SliverLogoPersistentHeader(this.container, this.height);
 
   @override
   Widget build(
           BuildContext context, double shrinkOffset, bool overlapsContent) =>
-      Container(
-        color: Colors.white,
-      );
+      container;
 
   @override
-  double get maxExtent => container.height;
+  double get maxExtent => height;
 
   @override
-  double get minExtent => container.height;
+  double get minExtent => height;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
@@ -83,11 +85,12 @@ class _DetailPageState extends State<DetailPage>
             ),
             Container(
               margin: EdgeInsets.all(10),
-              child: Center(
-                child: Text('Ad will go here'),
-              ),
-              height: 100,
+              height: 150,
               decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(AppAssets.banner2),
+                  fit: BoxFit.fill,
+                ),
                 border: Border.all(
                   color: kPrimaryColor,
                   width: 1,
@@ -128,11 +131,12 @@ class _DetailPageState extends State<DetailPage>
             ),
             Container(
               margin: EdgeInsets.all(10),
-              child: Center(
-                child: Text('Ad will go here'),
-              ),
-              height: 100,
+              height: 150,
               decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(AppAssets.banner1),
+                  fit: BoxFit.fill,
+                ),
                 border: Border.all(
                   color: kPrimaryColor,
                   width: 1,
@@ -167,29 +171,36 @@ class _DetailPageState extends State<DetailPage>
               ),
               SliverPersistentHeader(
                 delegate: _SliverLogoPersistentHeader(
-                  SizedBox(
-                    height: 300,
-                    width: double.infinity,
-                    child: Container(
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            _zodiac.imageName,
-                            color: kPrimaryColor,
-                          ),
-                          Text(
-                            _zodiac.name,
-                            style: TextStyle(
-                              color: kPrimaryColor,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
+                  Container(
+                    height: MediaQuery.of(context).size.height / 2.5,
+                    color: Colors.white,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          _zodiac.imageName,
+                          color: kPrimaryColor,
+                          // width: 250,
+                          // height: MediaQuery.of(context).size.height / 3.5,
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.65,
+                          child: Center(
+                            child: Text(
+                              _zodiac.name,
+                              style: TextStyle(
+                                color: kPrimaryColor,
+                                fontSize: 48,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
+                  MediaQuery.of(context).size.height / 2.5,
                 ),
                 pinned: true,
               ),
@@ -201,39 +212,9 @@ class _DetailPageState extends State<DetailPage>
                   child: Column(
                     // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Sign: ${_zodiac.sign}',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Planet: ${_zodiac.planet}',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Element: ${_zodiac.element}',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
+                      _container('Sign: ', _zodiac.sign),
+                      _container('Planet: ', _zodiac.planet),
+                      _container('Element: ', _zodiac.element),
                     ],
                   ),
                 ),
@@ -275,276 +256,56 @@ class _DetailPageState extends State<DetailPage>
               ),
             ];
           },
-          body: TabBarView(
-            controller: _tabController,
+          body: Column(
             children: [
-              _DailyDetail(name: _zodiac.name),
-              _WeeklyDetail(name: _zodiac.name),
-              _MonthlyDetail(name: _zodiac.name),
-              _YearlyDetail(name: _zodiac.name),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    DailyDetailView(name: _zodiac.name),
+                    WeeklyDetailView(name: _zodiac.name),
+                    MonthlyDetailView(name: _zodiac.name),
+                    YearlyDetailView(name: _zodiac.name),
+                  ],
+                ),
+              ),
+              LikeDislikeWidget(),
             ],
           ),
         ),
       ),
     );
   }
-}
 
-class _DailyDetail extends StatefulWidget {
-  final String name;
-
-  _DailyDetail({this.name});
-
-  @override
-  __DailyDetailState createState() => __DailyDetailState();
-}
-
-class __DailyDetailState extends State<_DailyDetail> {
-  var _dailyHoroscope = DailyHoroscope();
-
-  Future<DailyHoroscope> _fetchDailyResult() async {
-    return HoroscopeService.getDailyHoroscope(widget.name).catchError((e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e)));
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _fetchDailyResult(),
-      builder: (ctx, data) {
-        if (data.hasError)
-          return NoDataWidget(message: 'Error');
-        else {
-          if (data.hasData) {
-            _dailyHoroscope = data.data;
-            if (_dailyHoroscope?.detail?.isEmpty ?? true)
-              return NoDataWidget();
-            else {
-              return SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Padding(
-                  // padding:
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _dailyHoroscope.detail,
-                        style: TextStyle(
-                          fontSize: 16,
-                          letterSpacing: 1,
-                        ),
-                        softWrap: true,
-                      ),
-                      LikeDislikeWidget(),
-                    ],
+  Widget _container(String title, String message) {
+    return Container(
+      padding: EdgeInsets.only(
+        left: MediaQuery.of(context).size.width / 3.5,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              text: title,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: kPrimaryColor,
+              ),
+              children: [
+                TextSpan(
+                  text: message,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
                   ),
                 ),
-              );
-            }
-          } else
-            return LoadingWidget();
-        }
-      },
-    );
-  }
-}
-
-class _WeeklyDetail extends StatefulWidget {
-  final String name;
-
-  _WeeklyDetail({this.name});
-
-  @override
-  __WeeklyDetailState createState() => __WeeklyDetailState();
-}
-
-class __WeeklyDetailState extends State<_WeeklyDetail> {
-  var _weeklyHoroscope = WeeklyHoroscope();
-
-  Future<WeeklyHoroscope> _fetchWeeklyResult() async {
-    return HoroscopeService.getWeeklyHoroscope(widget.name).catchError((e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e)));
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _fetchWeeklyResult(),
-      builder: (ctx, data) {
-        if (data.hasError)
-          return NoDataWidget(message: 'Error');
-        else {
-          if (data.hasData) {
-            _weeklyHoroscope = data.data;
-            if (_weeklyHoroscope?.detail?.isEmpty ?? true)
-              return NoDataWidget();
-            else {
-              return SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        _weeklyHoroscope.detail,
-                        style: TextStyle(
-                          fontSize: 16,
-                          letterSpacing: 1,
-                        ),
-                        softWrap: true,
-                      ),
-                      LikeDislikeWidget(),
-                    ],
-                  ),
-                ),
-              );
-            }
-          } else
-            return LoadingWidget();
-        }
-      },
-    );
-  }
-}
-
-class _MonthlyDetail extends StatefulWidget {
-  final String name;
-
-  _MonthlyDetail({this.name});
-
-  @override
-  __MonthlyDetailState createState() => __MonthlyDetailState();
-}
-
-class __MonthlyDetailState extends State<_MonthlyDetail> {
-  var _monthlyHoroscope = MonthlyHoroscope();
-
-  Future<MonthlyHoroscope> _fetchMonthlyResult() async {
-    return HoroscopeService.getMonthlyHoroscope(widget.name).catchError((e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e)));
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _fetchMonthlyResult(),
-      builder: (ctx, data) {
-        if (data.hasError)
-          return NoDataWidget(message: 'Error');
-        else {
-          if (data.hasData) {
-            _monthlyHoroscope = data.data;
-            if (_monthlyHoroscope?.detail?.isEmpty ?? true)
-              return NoDataWidget();
-            else {
-              return SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 5),
-                      Text(
-                        _monthlyHoroscope.detail,
-                        style: TextStyle(
-                          fontSize: 16,
-                          letterSpacing: 1,
-                        ),
-                        softWrap: true,
-                      ),
-                      LikeDislikeWidget(),
-                    ],
-                  ),
-                ),
-              );
-            }
-          } else
-            return LoadingWidget();
-        }
-      },
-    );
-  }
-}
-
-class _YearlyDetail extends StatefulWidget {
-  final String name;
-
-  _YearlyDetail({this.name});
-
-  @override
-  __YearlyDetailState createState() => __YearlyDetailState();
-}
-
-class __YearlyDetailState extends State<_YearlyDetail> {
-  var _yearlyHoroscope = YearlyHoroscope();
-
-  Future<YearlyHoroscope> _fetchYearlyResult() async {
-    return HoroscopeService.getYearlyHoroscope(widget.name).catchError((e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e)));
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _fetchYearlyResult(),
-      builder: (ctx, data) {
-        if (data.hasError)
-          return NoDataWidget(message: 'Error');
-        else {
-          if (data.hasData) {
-            _yearlyHoroscope = data.data;
-            if (_yearlyHoroscope?.detail?.isEmpty ?? true)
-              return NoDataWidget();
-            else {
-              return SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        _yearlyHoroscope.detail,
-                        style: TextStyle(
-                          fontSize: 16,
-                          letterSpacing: 1,
-                        ),
-                        softWrap: true,
-                      ),
-                      LikeDislikeWidget(),
-                    ],
-                  ),
-                ),
-              );
-            }
-          } else
-            return LoadingWidget();
-        }
-      },
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -570,56 +331,4 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) => false;
-}
-
-class LikeDislikeWidget extends StatefulWidget {
-  @override
-  _LikeDislikeWidgetState createState() => _LikeDislikeWidgetState();
-}
-
-class _LikeDislikeWidgetState extends State<LikeDislikeWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          TextButton(
-            onPressed: () {},
-            child: Icon(
-              CupertinoIcons.hand_thumbsup,
-              color: kPrimaryColor,
-            ),
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: Size.zero,
-            ),
-          ),
-          TextButton(
-            onPressed: () {},
-            child: Icon(
-              CupertinoIcons.heart_fill,
-              color: Colors.red,
-            ),
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: Size.zero,
-            ),
-          ),
-          TextButton(
-            onPressed: () {},
-            child: Icon(
-              CupertinoIcons.hand_thumbsdown,
-              color: kPrimaryColor,
-            ),
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: Size.zero,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

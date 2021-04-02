@@ -2,8 +2,8 @@ const _imagesDir = 'assets/images';
 
 abstract class AppAssets {
   static const appLogo = '$_imagesDir/appLogo.png';
-  static const banner1 = '$_imagesDir/banner1.png';
-  static const banner2 = '$_imagesDir/banner2.png';
+  static const banner1 = '$_imagesDir/banner1.jpg';
+  static const banner2 = '$_imagesDir/banner2.jpg';
   static const aquarius = '$_imagesDir/Aquarius.png';
   static const aries = '$_imagesDir/Aries.png';
   static const cancer = '$_imagesDir/Cancer.png';
