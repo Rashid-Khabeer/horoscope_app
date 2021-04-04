@@ -164,7 +164,7 @@ class Zodiac {
       lastDate: DateTime(2000, 2, 18),
       element: 'Air',
       planet: 'Uranus, Saturn',
-      sign: '',
+      sign: 'Sun',
     ),
     Zodiac(
       dateRange: 'February 19-March 20',
@@ -174,7 +174,7 @@ class Zodiac {
       lastDate: DateTime(2000, 3, 20),
       element: 'Water',
       planet: 'Neptune, Jupiter',
-      sign: '',
+      sign: 'Sun',
     ),
     Zodiac(
       dateRange: 'March 21 - April 19',
@@ -194,7 +194,7 @@ class Zodiac {
       lastDate: DateTime(2000, 5, 20),
       element: 'Earth',
       planet: 'Venus',
-      sign: '',
+      sign: 'Sun',
     ),
     Zodiac(
       dateRange: 'May 21 - June 20',
@@ -203,8 +203,8 @@ class Zodiac {
       firstDate: DateTime(2000, 5, 21),
       lastDate: DateTime(2000, 6, 20),
       element: 'Air',
-      planet: '',
-      sign: 'Mercury',
+      planet: 'missing',
+      sign: 'Sun',
     ),
     Zodiac(
       dateRange: 'June 21 - July 22',
@@ -214,7 +214,7 @@ class Zodiac {
       lastDate: DateTime(2000, 7, 22),
       element: 'Water',
       planet: 'Moon',
-      sign: '',
+      sign: 'Sun',
     ),
     Zodiac(
       dateRange: 'July 23 - August 22',
@@ -224,7 +224,7 @@ class Zodiac {
       lastDate: DateTime(2000, 8, 22),
       element: 'Fire',
       planet: 'Sun',
-      sign: '',
+      sign: 'Sun',
     ),
     Zodiac(
       dateRange: 'August 23 - September 22',
@@ -234,7 +234,7 @@ class Zodiac {
       lastDate: DateTime(2000, 9, 22),
       element: 'Earth',
       planet: 'Mercury',
-      sign: '',
+      sign: 'Sun',
     ),
     Zodiac(
       dateRange: 'September 23 - October 22',
@@ -244,7 +244,7 @@ class Zodiac {
       lastDate: DateTime(2000, 10, 22),
       element: 'Air',
       planet: 'Venus',
-      sign: '',
+      sign: 'Sun',
     ),
     Zodiac(
       dateRange: 'October 23 - November 21',
@@ -254,7 +254,7 @@ class Zodiac {
       lastDate: DateTime(2000, 11, 21),
       element: 'Water',
       planet: 'Pluto, Mars',
-      sign: '',
+      sign: 'Sun',
     ),
     Zodiac(
       dateRange: 'November 22 - December 21',
@@ -264,7 +264,7 @@ class Zodiac {
       lastDate: DateTime(2000, 12, 21),
       element: 'Fire',
       planet: 'Jupiter',
-      sign: '',
+      sign: 'Sun',
     ),
     Zodiac(
       dateRange: 'December 22 - January 19',
@@ -274,7 +274,7 @@ class Zodiac {
       lastDate: DateTime(2000, 1, 19),
       element: 'Earth',
       planet: 'Saturn',
-      sign: '',
+      sign: 'Sun',
     ),
   ];
 }
