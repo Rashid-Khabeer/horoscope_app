@@ -35,7 +35,6 @@ abstract class AppNavigation {
   }
 
   static final routes = <String, WidgetBuilder>{
-    // AppPage.mainPage._name: (context) => HomePage(),
     AppPage.mainPage._name: (context) =>
         AppData().getIsNew() ? DetailPage() : WelcomePage(),
     AppPage.detailPage._name: (context) => DetailPage(),

@@ -55,7 +55,7 @@ class DailyHoroscope {
 
   DailyHoroscope.fromJson(Map<String, dynamic> json) {
     date = json['date'];
-    detail = json['horoscope'];
+      detail = json['horoscope'];
     sunSign = json['sunsign'];
   }
 
@@ -158,7 +158,7 @@ class Zodiac {
   static final zodiacList = [
     Zodiac(
       dateRange: 'January 20-February 18',
-      name: 'Aquarius',
+      name: 'aquarius',
       imageName: AppAssets.aquarius,
       firstDate: DateTime(2000, 1, 20),
       lastDate: DateTime(2000, 2, 18),
@@ -168,7 +168,7 @@ class Zodiac {
     ),
     Zodiac(
       dateRange: 'February 19-March 20',
-      name: 'Pisces',
+      name: 'pisces',
       imageName: AppAssets.pisces,
       firstDate: DateTime(2000, 2, 19),
       lastDate: DateTime(2000, 3, 20),
@@ -178,7 +178,7 @@ class Zodiac {
     ),
     Zodiac(
       dateRange: 'March 21 - April 19',
-      name: 'Aries',
+      name: 'aries',
       imageName: AppAssets.aries,
       firstDate: DateTime(2000, 3, 21),
       lastDate: DateTime(2000, 4, 19),
@@ -188,7 +188,7 @@ class Zodiac {
     ),
     Zodiac(
       dateRange: 'April 20 - May 20',
-      name: 'Taurus',
+      name: 'taurus',
       imageName: AppAssets.taurus,
       firstDate: DateTime(2000, 4, 20),
       lastDate: DateTime(2000, 5, 20),
@@ -198,17 +198,17 @@ class Zodiac {
     ),
     Zodiac(
       dateRange: 'May 21 - June 20',
-      name: 'Gemini',
+      name: 'gemini',
       imageName: AppAssets.gemini,
       firstDate: DateTime(2000, 5, 21),
       lastDate: DateTime(2000, 6, 20),
       element: 'Air',
-      planet: 'missing',
+      planet: 'Mercury',
       sign: 'Sun',
     ),
     Zodiac(
       dateRange: 'June 21 - July 22',
-      name: 'Cancer',
+      name: 'cancer',
       imageName: AppAssets.cancer,
       firstDate: DateTime(2000, 6, 21),
       lastDate: DateTime(2000, 7, 22),
@@ -218,7 +218,7 @@ class Zodiac {
     ),
     Zodiac(
       dateRange: 'July 23 - August 22',
-      name: 'Leo',
+      name: 'leo',
       imageName: AppAssets.leo,
       firstDate: DateTime(2000, 7, 23),
       lastDate: DateTime(2000, 8, 22),
@@ -228,7 +228,7 @@ class Zodiac {
     ),
     Zodiac(
       dateRange: 'August 23 - September 22',
-      name: 'Virgo',
+      name: 'virgo',
       imageName: AppAssets.virgo,
       firstDate: DateTime(2000, 8, 23),
       lastDate: DateTime(2000, 9, 22),
@@ -238,7 +238,7 @@ class Zodiac {
     ),
     Zodiac(
       dateRange: 'September 23 - October 22',
-      name: 'Libra',
+      name: 'libra',
       imageName: AppAssets.libra,
       firstDate: DateTime(2000, 9, 23),
       lastDate: DateTime(2000, 10, 22),
@@ -248,7 +248,7 @@ class Zodiac {
     ),
     Zodiac(
       dateRange: 'October 23 - November 21',
-      name: 'Scorpio',
+      name: 'scorpio',
       imageName: AppAssets.scorpio,
       firstDate: DateTime(2000, 10, 23),
       lastDate: DateTime(2000, 11, 21),
@@ -258,7 +258,7 @@ class Zodiac {
     ),
     Zodiac(
       dateRange: 'November 22 - December 21',
-      name: 'Sagittarius',
+      name: 'sagittarius',
       imageName: AppAssets.sagittarius,
       firstDate: DateTime(2000, 11, 22),
       lastDate: DateTime(2000, 12, 21),
@@ -268,7 +268,7 @@ class Zodiac {
     ),
     Zodiac(
       dateRange: 'December 22 - January 19',
-      name: 'Capricorn',
+      name: 'capricorn',
       imageName: AppAssets.capricorn,
       firstDate: DateTime(2000, 12, 22),
       lastDate: DateTime(2000, 1, 19),
@@ -277,4 +277,8 @@ class Zodiac {
       sign: 'Sun',
     ),
   ];
+}
+
+extension StringExtension on String {
+  String capitalize() => '${this[0].toUpperCase()}${this.substring(1)}';
 }
