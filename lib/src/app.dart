@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:horoscope_app/src/data/data.dart';
@@ -25,8 +26,9 @@ class HoroscopeApp extends MaterialApp {
 
   static Future<void> initiate() async {
     WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
     await AppData.initialize();
     print(AppData().getIsNew());
-    // await AppData().clearData();
+    await AppData().clearData();
   }
 }
