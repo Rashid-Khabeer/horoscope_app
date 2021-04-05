@@ -54,7 +54,7 @@ class _TileWidget extends StatelessWidget {
               width: 50,
             ),
             Text(
-              zodiac.name,
+              zodiac.name.capitalize(),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
