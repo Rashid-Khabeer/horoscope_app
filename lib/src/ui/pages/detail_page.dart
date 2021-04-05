@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:horoscope_app/src/data/data.dart';
 import 'package:horoscope_app/src/data/models/horoscope-detail_model.dart';
+import 'package:horoscope_app/src/ui/pages/payment_page.dart';
+import 'package:horoscope_app/src/ui/pages/sign-in_page.dart';
 import 'package:horoscope_app/src/ui/views/daily_view.dart';
 import 'package:horoscope_app/src/ui/views/monthly_view.dart';
 import 'package:horoscope_app/src/ui/views/weekly_view.dart';
@@ -10,6 +12,7 @@ import 'package:horoscope_app/src/ui/widgets/like-dislike_widget.dart';
 import 'package:horoscope_app/src/utility/assets.dart';
 import 'package:horoscope_app/src/utility/constants.dart';
 import 'package:horoscope_app/src/utility/nav.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class _SliverLogoPersistentHeader extends SliverPersistentHeaderDelegate {
   final Container container;
@@ -59,6 +62,14 @@ class _DetailPageState extends State<DetailPage>
     _zodiac = widget.zodiac ?? _personZodiac;
   }
 
+  _launchURL(String url) async => await canLaunch(url)
+      ? await launch(url)
+      : ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Could not launch'),
+          ),
+        );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,20 +94,14 @@ class _DetailPageState extends State<DetailPage>
                 }
               },
             ),
-            Container(
-              margin: EdgeInsets.all(10),
-              height: 150,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(AppAssets.banner2),
-                  fit: BoxFit.fill,
-                ),
-                border: Border.all(
-                  color: kPrimaryColor,
-                  width: 1,
-                ),
+            if (!AppData().getHasPayed())
+              InkWell(
+                child: Image.asset(AppAssets.banner2),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _launchURL('http://bit.ly/3uqgUurB2');
+                },
               ),
-            ),
           ],
         ),
       ),
@@ -122,27 +127,38 @@ class _DetailPageState extends State<DetailPage>
             ListTile(
               title: Text('Ads Free Version'),
               leading: Icon(CupertinoIcons.creditcard_fill),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+                AppNavigation.to(
+                  context,
+                  PaymentPage(
+                    callBack: () => setState(() {}),
+                  ),
+                );
+              },
             ),
+            // if (!AppData().getSignIn())
             ListTile(
               title: Text('Sign In'),
               leading: Icon(CupertinoIcons.person_solid),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+                AppNavigation.to(
+                  context,
+                  SignInPage(
+                    callBack: () => setState(() {}),
+                  ),
+                );
+              },
             ),
-            Container(
-              margin: EdgeInsets.all(10),
-              height: 150,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(AppAssets.banner1),
-                  fit: BoxFit.fill,
-                ),
-                border: Border.all(
-                  color: kPrimaryColor,
-                  width: 1,
-                ),
+            if (!AppData().getHasPayed())
+              InkWell(
+                child: Image.asset(AppAssets.banner3),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _launchURL('http://bit.ly/2R6GrufB1');
+                },
               ),
-            ),
           ],
         ),
       ),
@@ -180,15 +196,15 @@ class _DetailPageState extends State<DetailPage>
                       children: [
                         Image.asset(
                           _zodiac.imageName,
-                          color: kPrimaryColor,
+                          // color: kPrimaryColor,
                           // width: 250,
-                          // height: MediaQuery.of(context).size.height / 3.5,
+                          height: MediaQuery.of(context).size.height / 3.5,
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.65,
                           child: Center(
                             child: Text(
-                              _zodiac.name,
+                              _zodiac.name.capitalize(),
                               style: TextStyle(
                                 color: kPrimaryColor,
                                 fontSize: 48,
@@ -330,38 +346,6 @@ class _DetailPageState extends State<DetailPage>
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _container(String title, String message) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width / 3.5,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          RichText(
-            text: TextSpan(
-              text: title,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: kPrimaryColor,
-              ),
-              children: [
-                TextSpan(
-                  text: message,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
