@@ -17,7 +17,7 @@ class StripeService {
   static String apiBase = 'https://api.stripe.com//v1';
   static String paymentApiUrl = '${StripeService.apiBase}/payment_intents';
   static String secret =
-      '51IVfeODDxtJ2s2UbBPtotr8PvlBKxFR2ppLXG0yc4VSnDZ4jrXzIhgzuiqQPFKryHgIXoaLo6moFTCAqOwSNDJ4J00om7apqcV';
+      '';
   static Map<String, String> headers = {
     'Authorization': 'Bearer ${StripeService.secret}',
     'Content-Type': 'application/x-www-form-urlencoded'
@@ -27,9 +27,9 @@ class StripeService {
     StripePayment.setOptions(
       StripeOptions(
         publishableKey:
-            'pk_live_51IVfeODDxtJ2s2Ub7nIlfWfOZ0UCQgvWKP4wn4iALC9IugPON7FUypSgUYAe7GLOP5Uq63y6MsQ34RXvvrkOR7Lx00VjsHFDuI',
+            '',
         androidPayMode: 'test',
-        merchantId: 'acct_1IVfeODDxtJ2s2Ub',
+        merchantId: '',
       ),
     );
   }
